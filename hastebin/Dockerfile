@@ -1,6 +1,6 @@
 FROM node:5.4
 
-MAINTAINER Ric Lister, rlister@gmail.com
+MAINTAINER Andras Kosztyu, kosztyua@vipcomputer.hu
 
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update && \
@@ -13,6 +13,10 @@ RUN npm install
 
 ADD ./app.sh /app/
 RUN chmod 755 app.sh
+ADD ./highlight.min.js /app/static/
+ADD ./haste-baseurl-patch-generator.pl /app/
+RUN perl haste-baseurl-patch-generator.pl bin
+RUN patch -p0 < baseurl.patch 
 
 EXPOSE 7777
 
